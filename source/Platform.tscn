@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Geometry2D.gd" type="Script" id=1]
+[ext_resource path="res://Platform.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 60, 30 )
+
+[node name="Platform" type="StaticBody2D"]
+collision_mask = 0
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+one_way_collision = true
+script = ExtResource( 1 )
+color = Color( 1, 0.301961, 0.529412, 1 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+scale = Vector2( 6, 3 )
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="queue_free"]

@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Geometry2D.gd" type="Script" id=1]
+[ext_resource path="res://LeapPlayer.gd" type="Script" id=2]
+[ext_resource path="res://Line.gd" type="Script" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 31.6228
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 60.0
+
+[node name="Prototype3" type="Node2D"]
+
+[node name="LeapPlayer" type="KinematicBody2D" parent="."]
+position = Vector2( 240, 340 )
+z_index = 1
+script = ExtResource( 2 )
+amount = 2.14355
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeapPlayer"]
+shape = SubResource( 1 )
+script = ExtResource( 1 )
+color = Color( 0.207843, 0.313726, 1, 1 )
+
+[node name="Tween" type="Tween" parent="LeapPlayer"]
+
+[node name="Line" type="Node2D" parent="LeapPlayer"]
+visible = false
+script = ExtResource( 3 )
+
+[node name="Target" type="Node2D" parent="."]
+position = Vector2( 240, 340 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Target"]
+shape = SubResource( 2 )
+script = ExtResource( 1 )
+color = Color( 0.0392157, 0.603922, 0.298039, 1 )
+
+[node name="Target2" type="Node2D" parent="."]
+position = Vector2( 380, 210 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Target2"]
+shape = SubResource( 2 )
+script = ExtResource( 1 )
+color = Color( 0.0392157, 0.603922, 0.298039, 1 )
+
+[node name="Target3" type="Node2D" parent="."]
+position = Vector2( 610, 210 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Target3"]
+shape = SubResource( 2 )
+script = ExtResource( 1 )
+color = Color( 0.0392157, 0.603922, 0.298039, 1 )

@@ -1,0 +1,80 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://PlatformSpawner.gd" type="Script" id=1]
+[ext_resource path="res://ActionNotifier.tscn" type="PackedScene" id=2]
+[ext_resource path="res://PlatformActor.gd" type="Script" id=3]
+[ext_resource path="res://Platform.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Geometry2D.gd" type="Script" id=5]
+[ext_resource path="res://Prototype1.gd" type="Script" id=6]
+
+[sub_resource type="PhysicsMaterial" id=3]
+bounce = 0.237
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 510, 40 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 30, 30 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "move_vertically"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1030, 460 ), Vector2( 1030, 280 ) ]
+}
+
+[node name="Prototype1" type="Node2D"]
+script = ExtResource( 6 )
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2( 510, 560 )
+physics_material_override = SubResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource( 1 )
+script = ExtResource( 5 )
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+position = Vector2( 160, 470 )
+z_index = 1
+collision_layer = 0
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+position = Vector2( 0, -30 )
+shape = SubResource( 4 )
+script = ExtResource( 5 )
+color = Color( 0.262745, 0.568627, 1, 1 )
+
+[node name="JumpNotifier" parent="KinematicBody2D" instance=ExtResource( 2 )]
+action = "jump"
+
+[node name="PlatformSpawner" type="Position2D" parent="."]
+position = Vector2( 1030, 310.541 )
+script = ExtResource( 1 )
+platform_scene = ExtResource( 4 )
+min_wait_time = 0.5
+max_wait_time = 0.85
+
+[node name="Timer" type="Timer" parent="PlatformSpawner"]
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlatformSpawner"]
+autoplay = "move_vertically"
+anims/move_vertically = SubResource( 5 )
+
+[node name="Platform" parent="." instance=ExtResource( 4 )]
+position = Vector2( 960, 470 )
+[connection signal="pressed" from="KinematicBody2D/JumpNotifier" to="KinematicBody2D" method="jump"]
+[connection signal="released" from="KinematicBody2D/JumpNotifier" to="KinematicBody2D" method="cancel_jump"]
+[connection signal="timeout" from="PlatformSpawner/Timer" to="PlatformSpawner" method="spawn"]
